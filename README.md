@@ -1,5 +1,16 @@
-import json
+TASK:
+    Given the description of an NFA in the input json file, convert that machine into a DFA and write it's description to an output.json file.
 
+PROCEDURE:
+
+-> So, the code starts with importing the json library to bring in the input json and putting the data into an input object.
+
+
+
+-> So, the code starts by identifying the various parts of the input json, and separating it into components.
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 with open('input.json') as json_file:
     data = json.load(json_file)
@@ -24,7 +35,14 @@ output_start = input_start
 
 output_states = [] # this is just the list of output states
 
-output_final = []  # this is gonna be the set of all final states
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+This is the initialisation code
+
+-> Then we use the Bit Masking technique to generate all the possible output states. Along side this, we also generate the final states
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 for i in range (0, pow(2, input_number_of_states)):
     # now we will run that exponential thing
@@ -37,11 +55,18 @@ for i in range (0, pow(2, input_number_of_states)):
     for j in state:
         if j in input_final:
             output_final.append(state)
-            
 
 
-# we have all the output states now, 
-# presently we will start forming the output values
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+-> There after, we use a simple trick of converting the given input function to a dictionary which is of the form
+
+"state" + "alphabet" : [Set of states it goes to]
+
+This trick helps us later when we are forming the output transition function and we need to take unions of all the transitions
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 modified_input = {}
 
@@ -77,18 +102,7 @@ for state in output_states:
 for output in output_function:
     print(output)
 
-
-output = {}
-
-output['states'] = pow(2, input_number_of_states)
-output['letters'] = input_alphabet
-output['t_func'] = output_function
-output['start'] = 0
-output['final'] = output_final
-
-with open('output.json', 'w') as outfile:
-    json.dump(output, outfile, indent = 4)
+/////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
+Then we do the necessary formalities for applying the finishing touches and wrap up the code by writing the output to an output.json file
